@@ -1,1 +1,136 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invitación de Alisson</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;min-height:100vh;
+ font-family:Georgia,serif;
+ color:#fff;text-align:center;
+ background:linear-gradient(135deg,#251333,#714b91,#c3a9d8,#514064);
+ display:flex;justify-content:center;align-items:center;
+ padding:22px 12px;
+}
+.card{
+ width:100%;max-width:470px;
+ padding:35px 22px;
+ border:2px solid #e8d8f5;
+ border-radius:25px;
+ background:rgba(35,18,49,.83);
+ box-shadow:0 0 35px #e5c8ff88;
+}
+.small{letter-spacing:5px;color:#e6d6f5;font-size:13px}
+h1{font-size:37px;color:#f0dcff;margin:15px 0 5px}
+h2{font-size:22px;color:#e8d9f5;font-weight:normal}
+.line{height:1px;background:#d9c1ed;margin:22px 0}
+.cake{font-size:65px;margin:12px}
+.message{font-size:18px;line-height:1.6}
+.details{font-size:18px;line-height:1.9;color:#f4eaff}
+.count{display:flex;justify-content:center;gap:9px;margin:20px 0}
+.unit{
+ background:#ffffff18;border:1px solid #d9c1ed;
+ border-radius:12px;padding:12px 7px;min-width:65px
+}
+.unit strong{display:block;font-size:27px;color:#fff}
+.unit span{font-size:11px;color:#e5d3f5}
+button{
+ border:1px solid #f0dcff;background:#e6d4f5;
+ color:#382148;padding:13px 18px;
+ border-radius:25px;font-size:15px;
+ margin:7px;cursor:pointer
+}
+.footer{font-size:14px;color:#e5d3f5;margin-top:22px}
+.star{position:fixed;color:#fff;animation:fall 6s linear infinite;top:-20px}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="card">
+ <div class="small">✨ UNA CELEBRACIÓN ESPECIAL ✨</div>
+ <h2>¡Estás invitado!</h2>
+ <h1>Alisson</h1>
+ <h2>Gallardo Mendoza</h2>
+ <div class="cake">🎂</div>
+ <div class="line"></div>
+ <p class="message">
+ Hay momentos que se disfrutan más cuando se comparten.
+ Ven a celebrar conmigo, disfrutar de una rica tarde y,
+ por supuesto, ¡comer pastel!
+ </p>
+ <div class="line"></div>
+ <div class="details">
+ 📅 Miércoles 18 de noviembre de 2026<br>
+ 🕕 18:00 horas<br>
+ 📍 Condominio Alameda<br>
+ A-PB-4
+ </div>
+ <div class="line"></div>
+ <h2>⏳ Cuenta regresiva ⏳</h2>
+ <div class="count">
+  <div class="unit"><strong id="days">0</strong><span>DÍAS</span></div>
+  <div class="unit"><strong id="hours">0</strong><span>HORAS</span></div>
+  <div class="unit"><strong id="mins">0</strong><span>MIN</span></div>
+  <div class="unit"><strong id="secs">0</strong><span>SEG</span></div>
+ </div>
+ <p id="status">¡Ya falta poquito para celebrar!</p>
+ <button onclick="music()">🎵 Música de fiesta</button>
+ <br>
+ <button onclick="maps()">📍 Cómo llegar</button>
+ <button onclick="whatsapp()">💬 Confirmar asistencia</button>
+ <div class="footer">¡Te esperamos! 💜<br>Con cariño, Alisson</div>
+</div>
+<script>
+const target=new Date("2026-11-18T18:00:00-04:00").getTime();
+function update(){
+ let diff=target-Date.now();
+ if(diff<=0){
+  document.getElementById("days").textContent="0";
+  document.getElementById("hours").textContent="0";
+  document.getElementById("mins").textContent="0";
+  document.getElementById("secs").textContent="0";
+  document.getElementById("status").textContent="🎉 ¡Llegó el momento de celebrar! 🎉";
+  return;
+ }
+ document.getElementById("days").textContent=Math.floor(diff/86400000);
+ document.getElementById("hours").textContent=Math.floor(diff%86400000/3600000);
+ document.getElementById("mins").textContent=Math.floor(diff%3600000/60000);
+ document.getElementById("secs").textContent=Math.floor(diff%60000/1000);
+}
+setInterval(update,1000);update();
+function maps(){
+ window.open("https://www.google.com/maps/search/?api=1&query=Condominio+Alameda+Tarija+Bolivia","_blank");
+}
+function whatsapp(){
+ window.open("https://wa.me/59178341353?text=Hola%2C%20confirmo%20mi%20asistencia%20a%20la%20celebraci%C3%B3n%20de%20Alisson","_blank");
+}
+let audio,playing=false,timer;
+function music(){
+ if(playing){clearInterval(timer);playing=false;return;}
+ const AC=window.AudioContext||window.webkitAudioContext;
+ audio=new AC();playing=true;
+ const notes=[523,659,784,659,587,698,880,784];
+ let i=0;
+ timer=setInterval(()=>{
+  let osc=audio.createOscillator(),gain=audio.createGain();
+  osc.type="triangle";osc.frequency.value=notes[i%notes.length];
+  gain.gain.setValueAtTime(.12,audio.currentTime);
+  gain.gain.exponentialRampToValueAtTime(.001,audio.currentTime+.22);
+  osc.connect(gain);gain.connect(audio.destination);
+  osc.start();osc.stop(audio.currentTime+.23);i++;
+ },260);
+}
+for(let i=0;i<18;i++){
+ let s=document.createElement("div");s.className="star";
+ s.textContent="✦";s.style.left=Math.random()*100+"%";
+ s.style.animationDelay=Math.random()*6+"s";
+ s.style.fontSize=(10+Math.random()*15)+"px";
+ document.body.appendChild(s);
+}
+</script>
+</body>
+</html>
+
